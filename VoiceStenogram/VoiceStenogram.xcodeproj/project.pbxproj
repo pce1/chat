@@ -1,0 +1,13 @@
+// !$*UTF8*$!
+// This is a template Xcode project file
+// Open this project in Xcode to build and run on your iPhone
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+		rootObject = "PROJECT_OBJECT" /* Project object */;
+	};
+	rootObject = "PROJECT_OBJECT";
+}
