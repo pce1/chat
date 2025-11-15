@@ -6,6 +6,8 @@
 //
 
 import Foundation
+import Combine
+import SwiftUI
 
 class TranscriptStore: ObservableObject {
     @Published var transcripts: [Transcript] = []

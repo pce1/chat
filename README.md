@@ -148,26 +148,93 @@ Both permissions are requested on first use and can be managed in iOS Settings.
 
 ## Troubleshooting
 
-### Speech Recognition Not Working
-
-- Ensure permissions are granted in Settings → Privacy → Speech Recognition
-- Check microphone permissions in Settings → Privacy → Microphone
-- Verify you have an active internet connection (required for first-time setup)
-- Try restarting the app
-
 ### Build Errors in Xcode
 
+**"Multiple commands produce Info.plist"**
+- The Info.plist file was copied into the project twice
+- Fix: In Xcode left panel, find the Resources folder → right-click Info.plist → Delete → Move to Trash
+- Then: Product → Clean Build Folder (Shift + Cmd + K) and rebuild
+
+**"Type does not conform to protocol 'ObservableObject'" or "Missing import of module 'Combine'"**
+- The Swift files need proper imports
+- Fix: Make sure TranscriptStore.swift and SpeechRecognizer.swift have these imports at the top:
+  ```swift
+  import Foundation
+  import Combine
+  import SwiftUI
+  ```
+- Then clean (Shift + Cmd + K) and rebuild (Cmd + R)
+
+**Files not compiling or "Cannot find X in scope"**
+- Swift files may not be added to the target
+- Fix: Select each .swift file → Right panel → Target Membership → Check "VoiceStenogram"
+- Clean and rebuild
+
+**General build issues:**
 - Ensure you're using Xcode 15.0 or later
 - Clean build folder: Product → Clean Build Folder (Shift + Cmd + K)
 - Verify deployment target is set to iOS 16.0 or later
-- Check that all Swift files are added to the target
+- Restart Xcode if problems persist
 
 ### App Won't Install on Device
 
+**"Signing for VoiceStenogram requires a development team"**
+- You need to add your Apple ID to Xcode
+- Fix: Xcode → Settings → Accounts → Click + → Add Apple ID
+- Then: Select project → Signing & Capabilities → Check "Automatically manage signing" → Select your Apple ID under "Team"
+
+**"Untrusted Developer" message on iPhone**
+- Your developer certificate needs to be trusted
+- Fix: On iPhone, go to Settings → General → VPN & Device Management (or Profiles & Device Management)
+- Under "DEVELOPER APP" or your Apple ID email, tap it → Tap "Trust" → Confirm
+- Note: This section only appears AFTER you try to open the app once and see the "Untrusted Developer" error
+
+**Developer Mode Required (iOS 16+)**
+- Enable Developer Mode on your iPhone
+- Fix: Settings → Privacy & Security → Developer Mode → Turn ON → Restart iPhone
+- If you can't find it, try opening the app first - iOS will prompt you with a link to the setting
+
+**Device requirements:**
 - Ensure your device is running iOS 16.0 or later
-- Sign in with your Apple ID in Xcode preferences
-- Select your Apple ID as the "Team" in project settings
-- Trust your developer certificate on the device: Settings → General → Device Management
+- iPhone must be connected via USB cable
+- Trust the computer when prompted on iPhone
+
+### Speech Recognition Not Working
+
+**"Recognition error: recognition request was canceled"**
+- This is the most common runtime error
+- Causes and fixes:
+  1. **Internet connection**: Speech recognition requires internet. Check Wi-Fi or cellular connection
+  2. **Permissions**: Go to Settings → Privacy & Security → Speech Recognition → Enable for VoiceStenogram
+  3. **Microphone**: Settings → Privacy & Security → Microphone → Enable for VoiceStenogram
+  4. **App restart**: Force close the app (swipe up from app switcher) and reopen
+  5. **Device restart**: Restart your iPhone
+  6. **Temporary Apple service issue**: Wait a few minutes and try again
+
+**Speech recognition not accurate**
+- Speak slowly and clearly
+- Reduce background noise
+- Ensure microphone isn't blocked or covered
+- Try recording shorter segments (1-2 minutes at a time)
+- Check that you have a strong internet connection
+
+**Permissions not requesting**
+- If app doesn't ask for microphone/speech permissions:
+- Delete the app from iPhone
+- Reinstall from Xcode
+- Or manually enable in Settings → Privacy & Security → Microphone/Speech Recognition
+
+### Export/PDF Issues
+
+**PDF button does nothing**
+- Make sure you've saved the transcript first (tap Save after recording)
+- The PDF button is in the transcript detail view (tap a saved transcript from the Transcripts tab)
+- When you tap PDF, the iOS share sheet should appear - if it doesn't, try force-closing and reopening the app
+
+**Can't find saved transcripts**
+- After recording and tapping Save, switch to the "Transcripts" tab (bottom of screen)
+- All saved transcripts are listed there
+- Tap any transcript to view details and export
 
 ## Customization
 
