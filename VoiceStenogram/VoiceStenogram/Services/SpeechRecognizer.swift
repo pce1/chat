@@ -8,6 +8,7 @@
 import AVFoundation
 import Speech
 import SwiftUI
+import Combine
 
 class SpeechRecognizer: ObservableObject {
     @Published var transcript = ""
